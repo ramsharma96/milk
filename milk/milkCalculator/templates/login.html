@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block body %}
+  <div class="container">
+    <div class="jumbotron" style="background: red">
+      <h1>Please Login</h1>
+
+        <form method="post" action="{% url 'milk_list:user_login' %}">
+          {% csrf_token %}
+          {# A more "HTML" way of creating the login form#}
+          <label for="username">Username:</label>
+          <input type="text" name="username" placeholder="Username">
+
+          <label for="password"></label>
+          <input type="password" name="password">
+
+          <input type="submit" name="" value="Login">
+
+        </form>
+
+    </div>
+  </div>
+{% endblock %}
