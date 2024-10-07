@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load bootstrap_icons %}
+
+{%block body%}
+
+<div class="container border border-warning mt-2">
+<div class=" m-2 ps-50">
+<form method='POST'>
+  {{ month_form.as_p }}
+  {% csrf_token %}
+</form>  
+</div>
+</div>
+<hr>
+
+<div class="container border border-info mt-4">
+    {% if milk_data %}
+    <table class="table text-white">
+        <thead>
+            <th scope="col">Sl No.</th>
+            <th scope="col">Date</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>  
+        </thead>
+        {% for milk_data in milk_data %}
+        <tr>
+            <td scope="col">{{forloop.counter}}</td>
+            <td scope="col">{{milk_data.issue_date}}</td>
+            <td scope="col">{{milk_data.qty}}</td>
+            <td scope="col">{{milk_data.price}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+    <hr>
+    <table class="table table-bordered text-white">
+        <thead>
+            <th>Total Price</th>
+            <th><button class="btn btn-warning"><a style="text-decoration:none" href="{% url 'milk_list:calculate' %}">Calculate</button></th>
+            <th>{{total_price}}</th>
+        </thead>
+       
+    
+
+    </table>
+
+    {% else %}
+    <h3>Milk Date Not Found. Please Add First!!</h3>
+    {% endif %}
+</div>
+
+
+{%endblock%}

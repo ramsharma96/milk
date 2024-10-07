@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block body %}
+<div class="container bg-dark">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card col-6 mx-auto bg-success text-orange">
+        <h3 class="mx-auto mt-2 p-2 text-white underline">Add Milk</h3>
+
+        <form method="POST">
+          {{milk_form.as_table}} {% csrf_token %}
+          <input
+            type="submit"
+            class="btn btn-primary ms-5 mt-2"
+            value="Submit"
+          />
+        </form>
+      </div>
+    </div>
+    {% comment %} this is the form to show data in milk.html page {% endcomment %}
+    {% comment %} <div class="col-lg-8 mx-auto">
+      <div class="container">
+        {% if milk_data %}
+        <table class="table table-bordered text-white">
+            <thead>
+                <th>Sl No.</th>
+                <th>Date</th>
+                <th>Quantity</th>
+                <th>Price</th>  
+            </thead>
+            {% for milk_data in milk_data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{milk_data.issue_date}}</td>
+                <td>{{milk_data.qty}}</td>
+                <td>{{milk_data.price}}</td>
+            </tr>
+            {%endfor%}
+        </table>
+        <hr>
+        <table class="table table-bordered text-white">
+            <thead>
+                <th>Total Price</th>
+                <th><button class="btn btn-warning"><a href="{% url 'milk_list:calculate' %}">Calculate</button></th>
+                <th>{{total_price}}</th>
+            </thead>
+        </table>    
+        {% else %}
+        <h3>Milk Date Not Found. Please Add First!!</h3>
+        {% endif %}
+    </div> {% endcomment %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

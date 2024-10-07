@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milk Calculator</title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <style> {% block style %}{% endblock %} </style>
+      
+      
+</head>
+<body class="bg-dark text-white">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: burlywood;">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Milk Calculator</a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              
+              <li>
+                <a class="nav-link active" aria-current="page" href="{% url 'milk_list:home' %}">Home</a>
+              </li>
+              <li>
+                <a class="nav-link" href="{% url 'milk_list:milk' %}">Add Milk</a>
+              </li>
+            </ul>
+      
+        </div>
+      </nav>
+      {% block body %}
+      {%endblock%}
+    
+</body>
+</html>
