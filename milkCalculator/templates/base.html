@@ -42,9 +42,11 @@
           <li>
           <a class="nav-item nav-link" href="{% url 'milk_list:milk' %}">Add Milk</a>
           </li>
+          {% if not user.is_authenticated %}
           <li>
           <a class="nav-item nav-link" href="{% url 'milk_list:register' %}">Register</a>
           </li>
+          {% endif %}
   
           {# Some logic on what to display for last item#}
           {% if user.is_authenticated %}

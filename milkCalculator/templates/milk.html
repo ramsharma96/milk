@@ -41,10 +41,11 @@
         <hr>
         <table class="table table-bordered text-white">
             <thead>
-                <th>Total Price</th>
+                {% if total_price and total_qty %}
+                <th>Total Quantity: {{total_qty}}</th>
+                <th>Total Price: {{total_price}}</th>
+                {% endif %}
                 <th><button class="btn btn-warning"><a href="{% url 'milk_list:calculate' %}">Calculate</button></th>
-                <th>{{total_price}}</th>
-                <th>{{total_qty}}</th>
             </thead>
         </table>    
         {% else %}

@@ -9,6 +9,7 @@ class MilkData(models.Model):
     qty = models.FloatField()
     total_qty = models.IntegerField(null=True)
     price = models.IntegerField(null=True)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class MilkView(models.Model):
@@ -16,6 +17,7 @@ class MilkView(models.Model):
     issue_date = models.DateField()
     qty = models.IntegerField()
     price = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     class Meta:
         managed = False
         db_table = 'milk_view'

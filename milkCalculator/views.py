@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib.auth.models import User
 
 
 from . import forms
@@ -13,7 +14,6 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-
 # Home page of application
 def index(request):
     month_form = forms.MonthsForm()
@@ -24,24 +24,36 @@ def index(request):
 
 @login_required
 def show_milk_data(request):
-    return render(request, 'show_data.html', {'milk_data': MilkData.objects.all()})
+    user_id = request.user.id
+    # milk_data = MilkData.objects.get(pk=request.user.id)
+    milk_data = MilkData.objects.all()
+
+    return render(request, 'show_data.html', {'milk_data': milk_data})
     
 
 
 # save todos here
 @login_required
 def save_milk_data(request):
+    user_id = request.user.id
     milk_form = forms.MilkForm()
     all_milk = MilkData.objects.all()
-    milk_view = MilkView.objects.all()
+    # milk_view = MilkView.objects.all()
+    milk_view = MilkView.objects.filter(user_id__pk=user_id)
     if request.method == 'POST':
         milk = MilkData()
         milk_form = forms.MilkForm(request.POST)
         if milk_form.is_valid():
-            issue_date = milk_form.cleaned_data['issue_date']
-            qty = milk_form.cleaned_data['qty']
-            milk_form.save()
-            return HttpResponseRedirect('/milk-form/')
+            if request.user.is_authenticated:
+                print(request.user)
+                issue_date = milk_form.cleaned_data['issue_date']
+                qty = milk_form.cleaned_data['qty']
+                intance = MilkData(qty=qty, issue_date=issue_date, user=request.user)
+                intance.save()
+                
+
+                # milk_form.save()
+                return HttpResponseRedirect('/milk-form/')
             # return HttpResponseRedirect('/')
         else:
             print(milk_form.errors)
@@ -65,9 +77,10 @@ def delete_milk_data(request, pk):
 
 @login_required
 def calculate_price(request):
+    user_id = request.user.id
     milk_form = forms.MilkForm()
-    milk_qty = MilkData.objects.all()
-    milk_data = MilkView.objects.all()
+    milk_qty = MilkData.objects.filter(user_id__pk=user_id)
+    milk_data = MilkView.objects.filter(user_id__pk=user_id)
     total_price = 0
     total_qty = 0
     for milk in milk_data:
@@ -101,7 +114,7 @@ def user_login(request):
         else:
             print("Someone tried to login and failed.")
             print("They used username: {} and password: {}".format(username,password))
-            return HttpResponse("Invalid login details supplied.")
+            return HttpResponse("Invalid Username or Password.")
 
     else:
         #Nothing has been provided for username or password.
