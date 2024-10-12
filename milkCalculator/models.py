@@ -7,20 +7,21 @@ from django.contrib.auth.models import User
 class MilkData(models.Model):
     issue_date = models.DateField()
     qty = models.FloatField()
-    total_qty = models.IntegerField(null=True)
-    price = models.IntegerField(null=True)
+    total_qty = models.FloatField()
+    price = models.FloatField()
+    total_price = models.FloatField()
     user=models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-class MilkView(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    issue_date = models.DateField()
-    qty = models.IntegerField()
-    price = models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    class Meta:
-        managed = False
-        db_table = 'milk_view'
+# class MilkView(models.Model):
+#     id = models.BigIntegerField(primary_key=True)
+#     issue_date = models.DateField()
+#     qty = models.IntegerField()
+#     price = models.IntegerField()
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     class Meta:
+#         managed = False
+#         db_table = 'milk_view'
 
 
 

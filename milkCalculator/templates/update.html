@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% block body %}
+<div class="container bg-dark">
+  
+  
+  <div class="row">
+
+    <div class="col-lg-8 mx-auto">
+      <div class="card col-6 mx-auto bg-success text-orange">
+        <h3 class="mx-auto mt-2 p-2 text-white underline">Add Milk</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+          {{milk_form.as_p}} 
+          <input
+            type="submit"
+            class="btn btn-primary ms-5 mt-2"
+            value="Submit"
+          />
+        </form>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -27,7 +27,10 @@
                 <th>Sl No.</th>
                 <th>Date</th>
                 <th>Quantity</th>
-                <th>Price</th>  
+                <th>Price</th>
+                <th>Total Qty</th>
+                <th>Total Price</th>
+                <th>Action</th>
             </thead>
             {% for milk_data in milk_data %}
             <tr>
@@ -35,19 +38,24 @@
                 <td>{{milk_data.issue_date}}</td>
                 <td>{{milk_data.qty}}</td>
                 <td>{{milk_data.price}}</td>
+                <td>{{milk_data.total_qty}}</td>
+                <td>{{milk_data.total_price}}</td>
+                <td>
+                  {% comment %} <button class="btn btn-warning"><a href="{% url 'milk_list:update' milk_data.id %}">Update</button> {% endcomment %}
+                    {% comment %} <button class="btn btn-danger"><a href="{% url 'milk_list:delete' milk_data.id %}">Delete</button> {% endcomment %}
+                    <span><a href="{% url 'milk_list:delete' milk_data.id %}"><i class="material-icons" style="font-size:30px;color:red">delete</i></span>
+                  </td>
+
             </tr>
             {%endfor%}
         </table>
         <hr>
         <table class="table table-bordered text-white">
             <thead>
-                {% if total_price and total_qty %}
                 <th>Total Quantity: {{total_qty}}</th>
                 <th>Total Price: {{total_price}}</th>
-                {% endif %}
-                <th><button class="btn btn-warning"><a href="{% url 'milk_list:calculate' %}">Calculate</button></th>
             </thead>
-        </table>    
+        </table>  
         {% else %}
         <h3>Milk Date Not Found. Please Add First!!</h3>
         {% endif %}

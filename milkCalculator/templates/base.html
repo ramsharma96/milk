@@ -3,36 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milk Calculator</title>
+    <title>{% block title %} {% endblock %}</title>
+    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <style> {% block style %}{% endblock %} </style>
-      
-      
+    <style> {% block style %}{% endblock %} </style>      
+    {% comment %} link for material ui icons  {% endcomment %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ti-icons@0.1.2/css/themify-icons.css">
+    
+
 </head>
 <body class="bg-dark text-white">
-    {% comment %} <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: burlywood;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Milk Calculator</a>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li>
-                <a class="nav-link active" aria-current="page" href="{% url 'milk_list:home' %}">Home</a>
-              </li>
-              <li>
-                <a class="nav-link" href="{% url 'milk_list:milk' %}">Add Milk</a>
-              </li>
-            </ul>
-      
-        </div>
-      </nav> {% endcomment %}
-
-
-      <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: burlywood;">
+     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: burlywood;">
         <div class="navbar-nav">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-          {# Django Home Link / Admin Link / Register Link#}
+          <ul class="nav justify-content-start">
           <li>
           <a class="navbar-brand" href="{% url 'milk_list:home' %}">Milk Calculator</a>
           </li>
@@ -47,9 +35,14 @@
           <a class="nav-item nav-link" href="{% url 'milk_list:register' %}">Register</a>
           </li>
           {% endif %}
+
+         
   
           {# Some logic on what to display for last item#}
           {% if user.is_authenticated %}
+          <li>
+            <a class="nav-item nav-link" href="{% url 'milk_list:profile' user.id %}">Profile</a>
+            </li>
           <li>
             <a class="nav-link" href="{% url 'milk_list:logout' %}">Logout</a></li>
           {% else %}
@@ -57,9 +50,62 @@
           {% endif %}
           </ul>
         </div>
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <div style="color: black; margin-left:600px">
+          Logged in As: {{user.first_name}}
+        </div>
       </nav>
 
 
+
+    
+    
+    
+    {% comment %} <div style="background:yellow;">
+      <ul class="nav justify-content-end">
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="{% url 'milk_list:home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="{% url 'milk_list:milk' %}">Add Milk</a>
+        </li>
+        {% if not user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="{% url 'milk_list:register' %}">Register</a>
+        </li>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'milk_list:logout' %}">Logout</a></li>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'milk_list:user_login' %}">Login</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div> {% endcomment %}
+
+
+
+    {% comment %} <div class="d-flex" style="background:yellow">
+      {% if user.is_authenticated %}
+      <div class="p-2 flex-grow-1" style="color:green; font-weight:bold;">Logged in as: {{user.first_name}}</div>
+      {% endif %}
+      <div class="p-2"><a class="nav-item nav-link" href="{% url 'milk_list:home' %}">Home</a></div>   
+      <div class="p-2"><a class="nav-item nav-link" href="{% url 'milk_list:milk' %}">Add Milk</a> </div>
+      {% if not user.is_authenticated %}
+      <div class="p-2"><a class="nav-item nav-link" href="{% url 'milk_list:register' %}">Register</a></div>
+      {% endif %}
+      {% if user.is_authenticated %}
+      <div class="p-2"><a class="nav-link" href="{% url 'milk_list:logout' %}">Logout</a></div>
+      {% else %}
+      <div class="p-2"><a class="nav-link" href="{% url 'milk_list:user_login' %}">Login</a></div>
+      {% endif %}
+    </div> {% endcomment %}
+    
+  
 
 
 

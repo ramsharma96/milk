@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 
+{% block profile %}
+
+<h5> Logged in As: {{user.first_name}}</h5>
+
+{% endblock %}
+
 {%block body%}
 <div class="container">
     <div >
       <h4>Welcome to Milk Calculator</h4>
       {% if user.is_authenticated %}
-          <h2>Welcome {{ user.username }}!</h2>
+          <h2>Welcome {{ user.first_name }}!</h2>
       {% else %}
       <p>Click <a href="{% url 'milk_list:user_login'%}">Here </a> to login and access the milk calculator facility </p>
     

@@ -1,2 +1,6 @@
 env
 db.sqlite3
+milk/__pycache__
+milkCalculator/__pycache__/
+.idea
+.vscode

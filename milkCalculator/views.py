@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 from . import forms
-from .models import MilkData, MilkView, Months
+from .models import MilkData, Months, UserProfileInfo
 
 
 from django.contrib.auth import authenticate, login, logout
@@ -17,7 +17,6 @@ from django.contrib.auth.decorators import login_required
 # Home page of application
 def index(request):
     month_form = forms.MonthsForm()
-    milk_data = MilkView.objects.all()
     return render(request, 'index.html', {})
     # return render(request, 'index.html', {'milk_data': milk_data, 'month_form': month_form})
 
@@ -32,61 +31,77 @@ def show_milk_data(request):
     
 
 
-# save todos here
+# save milk data here
 @login_required
 def save_milk_data(request):
+
     user_id = request.user.id
     milk_form = forms.MilkForm()
-    all_milk = MilkData.objects.all()
-    # milk_view = MilkView.objects.all()
-    milk_view = MilkView.objects.filter(user_id__pk=user_id)
+    milk_data = MilkData.objects.filter(user_id__pk=user_id)
     if request.method == 'POST':
-        milk = MilkData()
         milk_form = forms.MilkForm(request.POST)
         if milk_form.is_valid():
             if request.user.is_authenticated:
+                total_qty = 0
+                total_price = 0
+                filtered_milk = MilkData.objects.filter(user_id__pk=user_id)
+                for milk in filtered_milk:
+                    total_qty += milk.qty
+                    total_price += milk.price
                 print(request.user)
                 issue_date = milk_form.cleaned_data['issue_date']
                 qty = milk_form.cleaned_data['qty']
-                intance = MilkData(qty=qty, issue_date=issue_date, user=request.user)
+                intance = MilkData(qty=qty, issue_date=issue_date, price=qty*68, total_qty=total_qty+qty,total_price=total_price+(qty*68) ,user=request.user)
                 intance.save()
-                
-
                 # milk_form.save()
                 return HttpResponseRedirect('/milk-form/')
-            # return HttpResponseRedirect('/')
+                # return HttpResponseRedirect('/')
         else:
             print(milk_form.errors)
-    return render(request, 'milk.html', {'milk_form': milk_form, 'data': all_milk, 'milk_data':milk_view})
+    return render(request, 'milk.html', {'milk_form': milk_form, 'milk_data':milk_data})
 
 
-# update todos 
+# update milk data 
 @login_required
 def update_milk_data(request, pk):
-    pass
+    milk_data = MilkData.objects.get(pk=pk)
+    form = forms.MilkForm(instance=milk_data)
+    if request.method == 'POST':
+        existed_milk = MilkData.objects.get(pk=pk)
+        issue_date = request.POST['issue_date']
+        qty = request.POST['qty']
+        existed_milk.issue_date = issue_date
+        existed_milk.qty= qty
+        existed_milk.total_price = qty * 68
+        existed_milk.total_qty = existed_milk.total_qty + float(qty)
+        existed_milk.save()
+        return HttpResponseRedirect('/milk-form/')
+    else:
+         return render(request, 'update.html', {'milk_form':form})
+    
     
 
-# delete todos
+# delete milk data
 @login_required
 def delete_milk_data(request, pk):
     delete_milk = MilkData.objects.get(id=pk)
     print(delete_milk)
     delete_milk.delete()
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/milk-form/')
+    # return HttpResponseRedirect('/milk-form/')
 
 
 @login_required
 def calculate_price(request):
     user_id = request.user.id
     milk_form = forms.MilkForm()
-    milk_qty = MilkData.objects.filter(user_id__pk=user_id)
-    milk_data = MilkView.objects.filter(user_id__pk=user_id)
+    milk_data = MilkData.objects.filter(user_id__pk=user_id)
     total_price = 0
     total_qty = 0
     for milk in milk_data:
         total_price += milk.price
-    for qty in milk_qty:
-        total_qty += qty.qty
+        total_qty += milk.qty
+        
 
     return render(request, 'milk.html', {'milk_form': milk_form,'milk_data':milk_data,'total_price': total_price, 'total_qty': total_qty})
 
@@ -174,3 +189,11 @@ def user_logout(request):
     logout(request)
     # Return to homepage.
     return HttpResponseRedirect(reverse('milk_list:home'))
+
+
+
+@login_required
+def show_profile(request, pk):
+    user_data = User.objects.get(pk=pk)
+    user_photo = UserProfileInfo.objects.get(user_id__pk=pk)
+    return render(request, 'profile.html', {'user': user_data, 'user_photo': user_photo})
